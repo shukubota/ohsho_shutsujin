@@ -31,12 +31,7 @@ class Home extends HookWidget {
         title: const Text('王将出陣'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Panel(),
-          ],
-        ),
+        child: Panel(),
       ),
     );
   }
