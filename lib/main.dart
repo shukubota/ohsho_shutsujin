@@ -16,19 +16,29 @@ class OhshoShutsujin extends HookWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Home(),
+      initialRoute: initialRoute,
+      onGenerateRoute: (RouteSettings settings) {
+        print('build ${settings.name}');
+        WidgetBuilder builder = rootRouter[settings.name] as WidgetBuilder;
+        return MaterialPageRoute(
+          builder: (ctx) => builder(ctx),
+          settings: settings,
+        );
+      },
+      navigatorKey: rootNavigatorKey,
     );
   }
 }
 
 class Home extends HookWidget {
-  const Home({Key? key}) : super(key: key);
+  final String text;
+  const Home({Key? key, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('王将出陣'),
+        title: Text(text),
       ),
       body: Center(
         child: Panel(),
@@ -36,3 +46,37 @@ class Home extends HookWidget {
     );
   }
 }
+
+class Login extends HookWidget {
+  const Login({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('path1'),
+      ),
+      body: Center(
+        child: Text('path1'),
+      ),
+    );
+  }
+}
+
+class Routes {
+  Routes._();
+  static const String splash = '/';
+  static const String login = '/login';
+  // static const String loginSuccess = '/login/success';
+  // static const String stock = '/stock';
+}
+
+Map<String, WidgetBuilder> rootRouter = {
+  Routes.splash: (BuildContext context) => Home(text: 'home'),
+  Routes.login: (BuildContext context) => Login(),
+};
+
+String initialRoute = Routes.splash;
+
+final GlobalKey<NavigatorState> rootNavigatorKey =
+    new GlobalKey<NavigatorState>();
