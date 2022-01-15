@@ -20,12 +20,16 @@ class Panel extends HookWidget {
             height: pieceSize * 5,
             color: Colors.grey,
             child: GestureDetector(
-              onTap: () {
-                print('onTapa');
+              onHorizontalDragEnd: (DragEndDetails point) {
+                print('end');
+                print(point.velocity.pixelsPerSecond.dx);
+                print(point.velocity);
+                final transitionFunction =
+                    point.velocity.pixelsPerSecond.dx > 0.0
+                        ? () => _transit(TransitionType.fromLeft)
+                        : () => _transit(TransitionType.fromRight);
                 rootNavigatorKey.currentState
-                    ?.pushReplacement(_transit(TransitionType.fromLeft));
-                ;
-                // rootNavigatorKey.currentState?.pushNamed(Routes.login);
+                    ?.pushReplacement(transitionFunction());
               },
             ),
           ),
@@ -46,13 +50,14 @@ class Panel extends HookWidget {
   }
 }
 
-Route _transit(String type) {
-  print(type);
+Route _transit(String transitionType) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) =>
         const Home(text: 'a'),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(1.0, 0.0);
+      final double offsetX =
+          transitionType == TransitionType.fromLeft ? -1.0 : 1.0;
+      final begin = Offset(offsetX, 0.0);
       const end = Offset.zero;
       final tween = Tween(begin: begin, end: end);
       final offsetAnimation = animation.drive(tween);
