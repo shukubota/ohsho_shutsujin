@@ -21,8 +21,11 @@ class Panel extends HookWidget {
             color: Colors.grey,
             child: GestureDetector(
               onTap: () {
-                print('onTap');
-                rootNavigatorKey.currentState?.pushNamed(Routes.login);
+                print('onTapa');
+                rootNavigatorKey.currentState
+                    ?.pushReplacement(_transit(TransitionType.fromLeft));
+                ;
+                // rootNavigatorKey.currentState?.pushNamed(Routes.login);
               },
             ),
           ),
@@ -41,4 +44,22 @@ class Panel extends HookWidget {
       ),
     );
   }
+}
+
+Route _transit(String type) {
+  print(type);
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        const Home(text: 'a'),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      final tween = Tween(begin: begin, end: end);
+      final offsetAnimation = animation.drive(tween);
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
+    },
+  );
 }

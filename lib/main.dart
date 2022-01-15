@@ -67,16 +67,20 @@ class Routes {
   Routes._();
   static const String splash = '/';
   static const String login = '/login';
-  // static const String loginSuccess = '/login/success';
-  // static const String stock = '/stock';
 }
 
 Map<String, WidgetBuilder> rootRouter = {
-  Routes.splash: (BuildContext context) => Home(text: 'home'),
-  Routes.login: (BuildContext context) => Login(),
+  Routes.splash: (BuildContext context) => const Home(text: 'home'),
+  Routes.login: (BuildContext context) => const Login(),
 };
 
 String initialRoute = Routes.splash;
+
+class TransitionType {
+  TransitionType._();
+  static const String fromRight = 'FROM_RIGHT';
+  static const String fromLeft = 'FROM_LEFT';
+}
 
 final GlobalKey<NavigatorState> rootNavigatorKey =
     new GlobalKey<NavigatorState>();
