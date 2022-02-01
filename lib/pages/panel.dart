@@ -24,12 +24,15 @@ class Panel extends HookWidget {
                 print('end');
                 print(point.velocity.pixelsPerSecond.dx);
                 print(point.velocity);
-                final transitionFunction =
-                    point.velocity.pixelsPerSecond.dx > 0.0
-                        ? () => _transit(TransitionType.fromLeft)
-                        : () => _transit(TransitionType.fromRight);
-                rootNavigatorKey.currentState
-                    ?.pushReplacement(transitionFunction());
+                // dynamic transitionFunction = () => {};
+                if (point.velocity.pixelsPerSecond.dx > 0.0) {
+                  rootNavigatorKey.currentState
+                      ?.pushReplacement(_transit(TransitionType.fromLeft));
+                } else if (point.velocity.pixelsPerSecond.dx < 0.0) {
+                  rootNavigatorKey.currentState
+                      ?.pushReplacement(_transit(TransitionType.fromRight));
+                }
+                // 0の時は何もしない
               },
             ),
           ),
