@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
-class FormExample extends HookWidget {
+class FormExample extends StatelessWidget {
   const FormExample({Key? key}) : super(key: key);
 
   @override
