@@ -76,7 +76,7 @@ class Routes {
 Map<String, WidgetBuilder> rootRouter = {
   Routes.splash: (BuildContext context) => const Home(text: 'home'),
   Routes.login: (BuildContext context) => const Login(),
-  Routes.formExample: (BuildContext context) => const FormExample(),
+  Routes.formExample: (BuildContext context) => FormExample(),
 };
 
 String initialRoute = Routes.formExample;
