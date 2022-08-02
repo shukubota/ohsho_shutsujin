@@ -2,7 +2,8 @@
 class Koma {
   int width = 0;
   int height = 0;
-  List<Point> area = [];
+  // 左下のマスの座標(x, y)のminをpositionとする
+  late Point point;
   Koma({required KomaType komaType}) {
     switch(komaType) {
       case KomaType.ohsho:
@@ -41,12 +42,22 @@ class Koma {
         throw Error();
     }
   }
+  List<Point> getPointList() {
+    final pointList = <Point>[];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        pointList.add(Point(x: j, y: i));
+      }
+    }
+    return pointList;
+  }
 }
 
 // 座標を表すclass
 class Point {
   int x = 0;
   int y = 0;
+  Point({ required this.x, required this.y });
 }
 
 enum KomaType {
