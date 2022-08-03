@@ -58,6 +58,9 @@ class Point {
   int x = 0;
   int y = 0;
   Point({ required this.x, required this.y });
+  isEqual(Point point) {
+    return x == point.x && y == point.y;
+  }
 }
 
 enum KomaType {
