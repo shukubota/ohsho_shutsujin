@@ -14,7 +14,10 @@ class KomaView extends HookWidget {
     return Container(
       width: pieceSize * koma.width,
       height: pieceSize * koma.height,
-      color: Colors.blueAccent,
+      margin: const EdgeInsets.fromLTRB(pieceSize * 1.0, 0.0, 0, pieceSize * 0.0),
+      // padding: EdgeInsets.fromLTRB(koma.point.x.toDouble(), 0, 0, koma.point.y.toDouble()),
+      color: Colors.redAccent,
+      child: const Text("金"),
     );
   }
 }
