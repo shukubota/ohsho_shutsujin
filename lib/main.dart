@@ -69,17 +69,19 @@ class Login extends HookWidget {
 class Routes {
   Routes._();
   static const String splash = '/';
+  static const String home = '/home';
   static const String login = '/login';
   static const String formExample = '/form_example';
 }
 
 Map<String, WidgetBuilder> rootRouter = {
   Routes.splash: (BuildContext context) => const Home(text: 'home'),
+  Routes.home: (BuildContext context) => const Home(text: 'home'),
   Routes.login: (BuildContext context) => const Login(),
   Routes.formExample: (BuildContext context) => FormExample(),
 };
 
-String initialRoute = Routes.formExample;
+String initialRoute = Routes.splash;
 
 class TransitionType {
   TransitionType._();
