@@ -17,9 +17,6 @@ class KomaMap {
   KomaMap({ required this.komaList });
 
   bool canToRight(Koma koma) {
-    print(koma.point.x);
-    print(koma.point.y);
-    print("point=======");
     // 境界値チェック
     if (koma.point.x + koma.width >= panelCountX) {
       return false;
@@ -28,7 +25,67 @@ class KomaMap {
     final filledPointList = getFilledPointList();
     // 右が空いているかチェック
     for (int i = 0; i < koma.height; i++) {
-      final destination = Point(x: koma.point.x + koma.width, y: koma.point.y);
+      final destination = Point(x: koma.point.x + koma.width, y: koma.point.y + i);
+      // 行き先候補が埋まっていればfalseを返す
+      final existing = filledPointList.firstWhereOrNull((e) => e.isEqual(destination));
+      if (existing != null) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool canToLeft(Koma koma) {
+    // 境界値チェック
+    if (koma.point.x <= 0) {
+      return false;
+    }
+
+    final filledPointList = getFilledPointList();
+    // 右が空いているかチェック
+    for (int i = 0; i < koma.height; i++) {
+      final destination = Point(x: koma.point.x - 1, y: koma.point.y + i);
+      // 行き先候補が埋まっていればfalseを返す
+      final existing = filledPointList.firstWhereOrNull((e) => e.isEqual(destination));
+      if (existing != null) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool canUp(Koma koma) {
+    // 境界値チェック
+    if (koma.point.y + koma.height >= panelCountY) {
+      return false;
+    }
+    final filledPointList = getFilledPointList();
+    print(filledPointList);
+    print("=========up[");
+    // 上が空いているかチェック
+    for (int i = 0; i < koma.width; i++) {
+      final destination = Point(x: koma.point.x + i, y: koma.point.y + koma.height);
+      print("destination");
+      print(destination.x);
+      print(destination.y);
+      // 行き先候補が埋まっていればfalseを返す
+      final existing = filledPointList.firstWhereOrNull((e) => e.isEqual(destination));
+      if (existing != null) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool canDown(Koma koma) {
+    // 境界値チェック
+    if (koma.point.y <= 0) {
+      return false;
+    }
+    final filledPointList = getFilledPointList();
+    // 上が空いているかチェック
+    for (int i = 0; i < koma.width; i++) {
+      final destination = Point(x: koma.point.x + i, y: koma.point.y - 1);
       // 行き先候補が埋まっていればfalseを返す
       final existing = filledPointList.firstWhereOrNull((e) => e.isEqual(destination));
       if (existing != null) {
@@ -46,7 +103,7 @@ class KomaMap {
       for (int j = 0; j < pointList.length; j++) {
         final point = pointList[j];
         final existing = _filledPointList.firstWhereOrNull((e) => e.isEqual(point));
-        if (existing != null) {
+        if (existing == null) {
           _filledPointList.add(point);
         }
       }
@@ -63,13 +120,64 @@ class KomaMapController extends StateNotifier<KomaMap> {
     final point = koma.point;
 
     // 空いているか&壁でないか
-    final canToRight = state.canToRight(koma);
-    print(canToRight);
-    print('========cantoright');
-    if (!canToRight) {
+    if (!state.canToRight(koma)) {
       return;
     }
     final newPoint = Point(x: point.x + 1, y: point.y);
+    final newKomaList = [
+      for (final currentKoma in state.komaList)
+        if (koma.id == currentKoma.id)
+          Koma(id: koma.id, komaType: koma.komaType, title: koma.title, point: newPoint)
+        else
+          currentKoma,
+    ];
+    state = KomaMap(komaList: newKomaList);
+  }
+
+  void changeKomaPointToLeft(Koma koma) {
+    final point = koma.point;
+
+    // 空いているか&壁でないか
+    if (!state.canToLeft(koma)) {
+      return;
+    }
+    final newPoint = Point(x: point.x - 1, y: point.y);
+    final newKomaList = [
+      for (final currentKoma in state.komaList)
+        if (koma.id == currentKoma.id)
+          Koma(id: koma.id, komaType: koma.komaType, title: koma.title, point: newPoint)
+        else
+          currentKoma,
+    ];
+    state = KomaMap(komaList: newKomaList);
+  }
+
+  void changeKomaPointUp(Koma koma) {
+    final point = koma.point;
+
+    // 空いているか&壁でないか
+    if (!state.canUp(koma)) {
+      return;
+    }
+    final newPoint = Point(x: point.x, y: point.y + 1);
+    final newKomaList = [
+      for (final currentKoma in state.komaList)
+        if (koma.id == currentKoma.id)
+          Koma(id: koma.id, komaType: koma.komaType, title: koma.title, point: newPoint)
+        else
+          currentKoma,
+    ];
+    state = KomaMap(komaList: newKomaList);
+  }
+
+  void changeKomaPointDown(Koma koma) {
+    final point = koma.point;
+
+    // 空いているか&壁でないか
+    if (!state.canDown(koma)) {
+      return;
+    }
+    final newPoint = Point(x: point.x, y: point.y - 1);
     final newKomaList = [
       for (final currentKoma in state.komaList)
         if (koma.id == currentKoma.id)
