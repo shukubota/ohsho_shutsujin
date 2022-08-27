@@ -18,6 +18,7 @@ class OhshoShutsujin extends HookConsumerWidget {
       title: '王将出陣',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'NotosansJP',
       ),
       initialRoute: initialRoute,
       onGenerateRoute: (RouteSettings settings) {
