@@ -1,11 +1,15 @@
 
 class Koma {
+  int id;
   int width = 0;
   int height = 0;
+  KomaType komaType = KomaType.ohsho;
+
   String title = "";
   // 左下のマスの座標(x, y)のminをpositionとする
   Point point = Point(x: 0, y: 0);
-  Koma({required KomaType komaType, required this.point, required this.title}) {
+  Koma({required KomaType komaType, required this.point, required this.title, required this.id}) {
+    this.komaType = komaType;
     switch(komaType) {
       case KomaType.ohsho:
         width = 2;
@@ -43,6 +47,7 @@ class Koma {
         throw Error();
     }
   }
+
   // そのコマが埋めている座標のlist(height * width分ある)
   List<Point> getPointList() {
     final pointList = <Point>[];
