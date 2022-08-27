@@ -6,14 +6,14 @@ import 'package:ohsho_shutsujin/pages/form_example.dart';
 import 'package:ohsho_shutsujin/pages/panel.dart';
 
 void main() {
-  runApp(ProviderScope(child: OhshoShutsujin()));
+  runApp(const ProviderScope(child: OhshoShutsujin()));
 }
 
-class OhshoShutsujin extends HookWidget {
+class OhshoShutsujin extends HookConsumerWidget {
   const OhshoShutsujin({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: '王将出陣',
       theme: ThemeData(
