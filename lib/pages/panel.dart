@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ohsho_shutsujin/model/koma.dart';
 import 'package:ohsho_shutsujin/providers/location_provider.dart';
