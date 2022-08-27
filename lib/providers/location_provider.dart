@@ -4,17 +4,55 @@ import 'package:ohsho_shutsujin/model/koma.dart';
 import 'package:ohsho_shutsujin/pages/panel.dart';
 
 final komaMapProvider = StateNotifierProvider<KomaMapController, KomaMap>((ref) => KomaMapController());
+final clearStatusProvider = StateNotifierProvider<ClearStatusController, bool>((ref) => ClearStatusController());
 
-final ohsho = Koma(id: 1, komaType: KomaType.ohsho, point: Point(x: 0, y: 0), title: "王");
-final kin = Koma(id: 2, komaType: KomaType.kin, point: Point(x: 2, y: 2), title: "金");
+// 初期設定　ココは整合性チェックをしていない
+final ohsho = Koma(id: 1, komaType: KomaType.ohsho, point: Point(x: 1, y: 0), title: "王");
+final kin1 = Koma(id: 2, komaType: KomaType.kin, point: Point(x: 0, y: 0), title: "金");
+final kin2 = Koma(id: 3, komaType: KomaType.kin, point: Point(x: 3, y: 0), title: "金");
+final gin = Koma(id: 4, komaType: KomaType.gin, point: Point(x: 1, y: 2), title: "銀");
+final hisha = Koma(id: 5, komaType: KomaType.hisha, point: Point(x: 3, y: 2), title: "飛");
+final kaku = Koma(id: 6, komaType: KomaType.kaku, point: Point(x: 0, y: 2), title: "角");
+final kyosha = Koma(id: 7, komaType: KomaType.kyosha, point: Point(x: 2, y: 3), title: "香");
+final keima = Koma(id: 8, komaType: KomaType.keima, point: Point(x: 1, y: 3), title: "桂");
+final fu1 = Koma(id: 9, komaType: KomaType.fu, point: Point(x: 0, y: 4), title: "歩");
+final fu2 = Koma(id: 10, komaType: KomaType.fu, point: Point(x: 3, y: 4), title: "歩");
+
 final List<Koma> initialKomaList = [
   ohsho,
-  kin,
+  kin1,
+  kin2,
+  // gin,
+  // hisha,
+  // kaku,
+  // kyosha,
+  // keima,
+  fu1,
+  fu2,
 ];
 
+// 本当はdomain層相当の場所へ
 class KomaMap {
   final List<Koma> komaList;
   KomaMap({ required this.komaList });
+
+  Koma getOhsho() {
+    final ohsho = komaList.firstWhereOrNull((e) => e.komaType == KomaType.ohsho);
+    if (ohsho == null) {
+      throw Error();
+    }
+    return ohsho;
+  }
+
+  bool checkGameClear() {
+    final ohshoGoalPoint = Point(x: 1, y: 3);
+    final ohsho = getOhsho();
+    if (ohsho.point.isEqual(ohshoGoalPoint)) {
+      return true;
+    }
+    return false;
+  }
+
 
   bool canToRight(Koma koma) {
     // 境界値チェック
@@ -60,8 +98,6 @@ class KomaMap {
       return false;
     }
     final filledPointList = getFilledPointList();
-    print(filledPointList);
-    print("=========up[");
     // 上が空いているかチェック
     for (int i = 0; i < koma.width; i++) {
       final destination = Point(x: koma.point.x + i, y: koma.point.y + koma.height);
@@ -116,6 +152,10 @@ class KomaMap {
 class KomaMapController extends StateNotifier<KomaMap> {
   KomaMapController(): super(KomaMap(komaList: initialKomaList));
 
+  void init() {
+    state = KomaMap(komaList: initialKomaList);
+  }
+
   void changeKomaPointToRight(Koma koma) {
     final point = koma.point;
 
@@ -155,6 +195,11 @@ class KomaMapController extends StateNotifier<KomaMap> {
   void changeKomaPointUp(Koma koma) {
     final point = koma.point;
 
+    // クリア条件を満たしていればクリア
+    if (state.checkGameClear()) {
+      return;
+    }
+
     // 空いているか&壁でないか
     if (!state.canUp(koma)) {
       return;
@@ -189,6 +234,19 @@ class KomaMapController extends StateNotifier<KomaMap> {
   }
 }
 
+// clearしたかどうか
+class ClearStatusController extends StateNotifier<bool> {
+  ClearStatusController(): super(false);
+  void clearGame() {
+    state = true;
+  }
+  void init() {
+    state = false;
+  }
+}
+
+
+// 以下必要か確認必要
 // x: 0-3
 // y: 0-4
 class Location {

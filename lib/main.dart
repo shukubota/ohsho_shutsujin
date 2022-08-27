@@ -40,11 +40,54 @@ class Home extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(text),
-      ),
+      // appBar: AppBar(
+      //   title: Text(text),
+      // ),
       body: Center(
-        child: Panel(),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 30),
+              child: const Text(
+                "王将出陣",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              child: const Text(
+                "王将をゴールまで移動させましょう！",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 30),
+              child: const Text(
+                "ゴール",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Container(
+              child: const Text(
+                "↑↑↑↑↑↑",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Panel(),
+          ],
+        ),
       ),
     );
   }
