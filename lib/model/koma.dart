@@ -50,10 +50,11 @@ class Koma {
 
   // そのコマが埋めている座標のlist(height * width分ある)
   List<Point> getPointList() {
+    final originPoint = point;
     final pointList = <Point>[];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        pointList.add(Point(x: j, y: i));
+        pointList.add(Point(x: originPoint.x + j, y: originPoint.y + i));
       }
     }
     return pointList;

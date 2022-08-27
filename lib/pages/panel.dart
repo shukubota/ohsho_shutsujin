@@ -1,51 +1,90 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ohsho_shutsujin/model/koma.dart';
+import 'package:ohsho_shutsujin/providers/location_provider.dart';
+import 'package:ohsho_shutsujin/service/map.dart';
+import 'package:ohsho_shutsujin/widgets/koma_view.dart';
 
 import '../main.dart';
 
 const double pieceSize = 60;
 
-class Panel extends HookWidget {
-  const Panel({Key? key}) : super(key: key);
+const int panelCountX = 4;
+const int panelCountY = 5;
+const double panelWidth = pieceSize * panelCountX;
+const double panelHeight = pieceSize * panelCountY;
+
+// コマのlocation情報を管理する
+final mapService = MapService();
+
+class Panel extends ConsumerWidget {
+  Panel({Key? key}) : super(key: key);
+  // var ohsho = Koma(komaType: KomaType.ohsho, point: Point(x: 0, y: 0), title: "王");
+  // final kin = Koma(komaType: KomaType.kin, point: Point(x: 2, y: 2), title: "金");
+
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    KomaMap komaMap = ref.watch(komaMapProvider);
+
+    print(komaMap.komaList);
+
+    void toRight(Koma koma) {
+      ref.read(komaMapProvider.notifier).changeKomaPointToRight(koma);
+    }
+
+    void toLeft(Koma koma) {
+      ref.read(komaMapProvider.notifier).changeKomaPointToLeft(koma);
+    }
+
+    void up(Koma koma) {
+      ref.read(komaMapProvider.notifier).changeKomaPointUp(koma);
+    }
+    void down(Koma koma) {
+      ref.read(komaMapProvider.notifier).changeKomaPointDown(koma);
+    }
+
     return Container(
       color: Colors.blue,
       child: Stack(
         children: [
           Container(
-            width: pieceSize * 4,
-            height: pieceSize * 5,
+            width: panelWidth,
+            height: panelHeight,
             color: Colors.grey,
-            child: GestureDetector(
-              onHorizontalDragEnd: (DragEndDetails point) {
-                print('end');
-                print(point.velocity.pixelsPerSecond.dx);
-                print(point.velocity);
-                // dynamic transitionFunction = () => {};
-                if (point.velocity.pixelsPerSecond.dx > 0.0) {
-                  rootNavigatorKey.currentState
-                      ?.pushReplacement(_transit(TransitionType.fromLeft));
-                } else if (point.velocity.pixelsPerSecond.dx < 0.0) {
-                  rootNavigatorKey.currentState
-                      ?.pushReplacement(_transit(TransitionType.fromRight));
-                }
-                // 0の時は何もしない
-              },
-            ),
+            // child: GestureDetector(
+            //   onHorizontalDragEnd: (DragEndDetails point) {
+            //     print('end');
+            //     print(point.velocity.pixelsPerSecond.dx);
+            //     print(point.velocity);
+            //     // dynamic transitionFunction = () => {};
+            //     if (point.velocity.pixelsPerSecond.dx > 0.0) {
+            //       rootNavigatorKey.currentState
+            //           ?.pushReplacement(_transit(TransitionType.fromLeft));
+            //     } else if (point.velocity.pixelsPerSecond.dx < 0.0) {
+            //       rootNavigatorKey.currentState
+            //           ?.pushReplacement(_transit(TransitionType.fromRight));
+            //     }
+            //     // 0の時は何もしない
+            //   },
+            // ),
           ),
-          Container(
-            width: pieceSize,
-            height: pieceSize * 2,
-            color: Colors.blueAccent,
+          // ohsho
+          KomaView(
+            koma: komaMap.komaList[0],
+            toRight: toRight,
+            toLeft: toLeft,
+            up: up,
+            down: down,
           ),
-          Container(
-            margin: const EdgeInsets.only(left: pieceSize),
-            width: pieceSize,
-            height: pieceSize * 2,
-            color: Colors.pinkAccent,
+          KomaView(
+            koma: komaMap.komaList[1],
+            toRight: toRight,
+            toLeft: toLeft,
+            up: up,
+            down: down,
           ),
         ],
       ),
