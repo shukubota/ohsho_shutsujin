@@ -11,3 +11,10 @@ https://riverpod.dev/docs/providers/state_notifier_provider/
 
 例は↓に書いておいた
 https://github.dev/shukubota/flutter-tips
+
+## リリース
+### android
+https://docs.flutter.dev/deployment/android#signing-the-app
+これを参考に
+- upload key作成
+- upload keyをbuild.gradleに登録
