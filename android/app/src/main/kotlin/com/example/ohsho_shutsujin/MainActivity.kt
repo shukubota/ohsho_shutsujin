@@ -1,4 +1,4 @@
-package com.example.ohsho_shutsujin
+package com.shukubota.ohsho_shutsujin
 
 import io.flutter.embedding.android.FlutterActivity
 
