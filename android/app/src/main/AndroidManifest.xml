@@ -2,7 +2,7 @@
     package="com.shukubota.ohsho_shutsujin">
    <application
         android:label="ohsho_shutsujin"
-        android:icon="@mipmap/ohsho_icon">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
