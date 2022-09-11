@@ -86,6 +86,7 @@ class OhshoShutsujin extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: '王将出陣',
       theme: ThemeData(
         primarySwatch: Colors.blue,
