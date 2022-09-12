@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,6 +10,7 @@ import 'package:ohsho_shutsujin/pages/panel.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:http/http.dart' as http;
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -48,6 +51,15 @@ void main() async {
   final fcmToken = await FirebaseMessaging.instance.getToken();
   print(fcmToken);
   print('token');
+  final url = Uri.parse('https://hooks.slack.com/services/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');
+  Map<String, String> headers = {'content-type': 'application/json'};
+  String body = json.encode({'text': fcmToken});
+  final response = await http.post(url, headers: headers, body: body);
+
+  print(response.body);
+  print(response.statusCode);
+
+  // curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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
 
   // this.senderId,
   // this.category,
