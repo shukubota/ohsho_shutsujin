@@ -51,7 +51,7 @@ void main() async {
   final fcmToken = await FirebaseMessaging.instance.getToken();
   print(fcmToken);
   print('token');
-  final url = Uri.parse('https://hooks.slack.com/services/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');
+  final url = Uri.parse('https://hooks.slack.com/services/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');
   Map<String, String> headers = {'content-type': 'application/json'};
   String body = json.encode({'text': fcmToken});
   final response = await http.post(url, headers: headers, body: body);
