@@ -30,15 +30,15 @@ void main() async {
   );
   print("--------------aaa");
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-  // NotificationSettings settings = await messaging.requestPermission(
-  //   alert: true,
-  //   announcement: false,
-  //   badge: true,
-  //   carPlay: false,
-  //   criticalAlert: false,
-  //   provisional: false,
-  //   sound: true,
-  // );
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
 
   await messaging.setForegroundNotificationPresentationOptions(
     alert: true, // Required to display a heads up notification
@@ -46,7 +46,7 @@ void main() async {
     sound: true,
   );
 
-  // print('User granted permission: ${settings.authorizationStatus}');
+  print('User granted permission: ${settings.authorizationStatus}');
 
   final fcmToken = await FirebaseMessaging.instance.getToken();
   print(fcmToken);
