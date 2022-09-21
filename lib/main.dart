@@ -49,11 +49,14 @@ void main() async {
   print('User granted permission: ${settings.authorizationStatus}');
 
   final fcmToken = await FirebaseMessaging.instance.getToken();
+  final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+
   print(fcmToken);
+  print(apnsToken);
   print('token');
-  final url = Uri.parse('https://hooks.slack.com/services/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');
+  final url = Uri.parse('https://hooks.slack.com/services/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');
   Map<String, String> headers = {'content-type': 'application/json'};
-  String body = json.encode({'text': fcmToken});
+  String body = json.encode({'text': 'fcmToken: ${fcmToken} apnToken: ${apnsToken}'});
   final response = await http.post(url, headers: headers, body: body);
 
   print(response.body);
