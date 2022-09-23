@@ -18,3 +18,13 @@ https://docs.flutter.dev/deployment/android#signing-the-app
 これを参考に
 - upload key作成
 - upload keyをbuild.gradleに登録
+
+## flutterfire
+
+```shell
+ flutterfire --version
+# 0.2.6
+flutterfire configure
+```
+
+com.shukubota.ohsho-shutsujin
