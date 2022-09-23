@@ -28,7 +28,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  print("--------------aaa");
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
@@ -48,19 +47,21 @@ void main() async {
 
   print('User granted permission: ${settings.authorizationStatus}');
 
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+  final fcmToken = await messaging.getToken()
+      .catchError((err) {
+        print(err);
+        return "";
+      });
+  final apnsToken = await messaging.getAPNSToken();
 
   print(fcmToken);
   print(apnsToken);
   print('token');
-  final url = Uri.parse('https://hooks.slack.com/services/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');
-  Map<String, String> headers = {'content-type': 'application/json'};
-  String body = json.encode({'text': 'fcmToken: ${fcmToken} apnToken: ${apnsToken}'});
-  final response = await http.post(url, headers: headers, body: body);
 
-  print(response.body);
-  print(response.statusCode);
+  final url = Uri.parse('https://pdm7gvwsz7.execute-api.ap-northeast-1.amazonaws.com/stg/serverless-template-dev-registerDeviceToken');
+  Map<String, String> headers = {'content-type': 'application/json'};
+  String body = json.encode({'fcm_device_token': '${fcmToken} apns_device_token: ${apnsToken != null ? apnsToken : ""}'});
+  http.post(url, headers: headers, body: body);
 
   // curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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
 
