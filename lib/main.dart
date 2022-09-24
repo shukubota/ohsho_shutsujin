@@ -52,7 +52,7 @@ void main() async {
         print(err);
         return "";
       });
-  final apnsToken = await messaging.getAPNSToken();
+  final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
 
   print(fcmToken);
   print(apnsToken);
@@ -60,7 +60,7 @@ void main() async {
 
   final url = Uri.parse('https://pdm7gvwsz7.execute-api.ap-northeast-1.amazonaws.com/stg/serverless-template-dev-registerDeviceToken');
   Map<String, String> headers = {'content-type': 'application/json'};
-  String body = json.encode({'fcm_device_token': '${fcmToken} apns_device_token: ${apnsToken != null ? apnsToken : ""}'});
+  String body = json.encode({'fcm_device_token': '$fcmToken', 'apns_device_token': apnsToken ?? ""});
   http.post(url, headers: headers, body: body);
 
   // curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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
